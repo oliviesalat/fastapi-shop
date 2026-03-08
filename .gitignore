@@ -45,6 +45,7 @@ dmypy.json
 media/
 staticfiles/
 db.sqlite3
+shop.db
 
 # Logs
 logs
@@ -80,3 +81,5 @@ coverage
 .vscode
 celerybeat-schedule
 celerybeat-schedule-wal
+
+backend/seed_data.py
