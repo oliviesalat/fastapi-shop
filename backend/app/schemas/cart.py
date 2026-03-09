@@ -30,6 +30,8 @@ class CartResponse(BaseModel):
     total: float = Field(..., gt=0, description="Total price")
     items_count: int = Field(..., gt=0, description="Total number of items")
 
+class CartRequest(BaseModel):
+    cart: dict[int, int] = Field(default_factory=dict)
 
 class AddToCartRequest(BaseModel):
     product_id: int

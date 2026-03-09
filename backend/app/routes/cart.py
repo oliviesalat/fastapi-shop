@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Depends
 from sqlalchemy.orm import Session
 from backend.app.schemas.cart import (CartResponse, CartItemUpdate, CartItemCreate,
-                                      AddToCartRequest, UpdateCartRequest, RemoveFromCartRequest)
+                                      AddToCartRequest, UpdateCartRequest, RemoveFromCartRequest, CartRequest)
 from ..database import get_db
 from ..services.cart_service import CartService
 
@@ -12,8 +12,8 @@ router = APIRouter(
 
 
 @router.post('', response_model=CartResponse, status_code=status.HTTP_200_OK)
-def get_cart(cart_data: dict[int, int], db: Session = Depends(get_db)) -> CartResponse:
-    return CartService(db).get_cart_details(cart_data)
+def get_cart(request: CartRequest, db: Session = Depends(get_db)) -> CartResponse:
+    return CartService(db).get_cart_details(request.cart)
 
 
 @router.post('/add', status_code=status.HTTP_200_OK)
