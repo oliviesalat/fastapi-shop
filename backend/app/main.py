@@ -1,10 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Depends
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from .routes import products, categories, cart
-from .database import init_db
+from .database import init_db, get_db
 from contextlib import asynccontextmanager
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 
 @asynccontextmanager
@@ -43,6 +45,10 @@ def root():
     }
 
 @app.get('/healthcheck')
-def healthcheck():
-    return {'status': 'healthy'}
+def healthcheck(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {'status': 'healthy'}
+    except Exception:
+        raise HTTPException(status_code=503, detail="Database unavailable")
 
